@@ -21,12 +21,6 @@ $app->get('/[{name}]', function ($request, $response, $args) {
     return $this->renderer->render($response, 'index.phtml', $args);
 });
 
+//chat route
 
-// public function addMessage($username, $message, $ip)
-//   {
-//       $username = addslashes($username);
-//       $message = addslashes($message);
-//
-//       return (bool) $this->db->query("INSERT INTO messages
-//           VALUES (NULL, '{$username}', '{$message}', '{$ip}', NOW())");
-//   }
+//message route
