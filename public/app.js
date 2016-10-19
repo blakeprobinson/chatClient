@@ -1,14 +1,24 @@
 var app = angular.module("chatApp",[]);
 
-app.factory("DataModel", function() {
-  var Service = {};
+app.factory("DataModel", function($http) {
+  var service = {};
 
-  
+  service.sendMessage = function(message) {
+    var data = {
+      "message":"test"
+    };
+    console.log(data);
 
-  return Service;
+
+    return $http.put('api/message', JSON.stringify(data));
+  }
+
+
+
+  return service;
 });
 
-app.controller("ChatController", function($scope) {
+app.controller("ChatController", function($scope, DataModel) {
   $scope.chatMessages = [];
 
   $scope.formatChat = function(icon,username,text,origDt) {
@@ -28,6 +38,9 @@ app.controller("ChatController", function($scope) {
                            new Date());
 
       $scope.chatMessages.push(chat);
+      DataModel.sendMessage(chat).then(function(response) {
+        console.log(response)
+      }, function(response) {console.log(response)});
       $scope.newChatMsg = "";
     }
     else {
