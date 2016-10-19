@@ -11,13 +11,12 @@ $app->get('/[{name}]', function ($request, $response, $args) {
 
     $statement = $this->db->query("INSERT INTO messages
         VALUES (NULL, '{$username}', '{$message}', '{$ip}', NOW())");
-        var_dump($statement);
     if(!$statement) {
       var_dump($statement);
       die();
     }
 
-
+    // return $response;
     // Render index view
     return $this->renderer->render($response, 'index.phtml', $args);
 });
