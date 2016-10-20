@@ -12,6 +12,13 @@ app.factory("DataModel", function($http) {
             });
   }
 
+  service.createUser = function(user) {
+
+    return $http.post('api/user', user).success(function(data) {
+                console.log(data);
+            });
+  }
+
 
 
   return service;
