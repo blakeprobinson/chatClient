@@ -66,7 +66,8 @@ app.controller("ChatController", function($scope, DataModel, $http) {
     var user = {};
     user.username = $scope.user.username;
     user.email = $scope.user.email;
-    console.log(user);
+
+    //need to validate.
 
     //bring up the chat window
     var chatWindow = document.getElementById("chat-window");

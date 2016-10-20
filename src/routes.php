@@ -60,25 +60,20 @@ $app->get('/api/getmessages', function ($request, $response, $args) {
     $data;
     $newResponse;
     try {
-        $sql = "SELECT name, email FROM users
+        $sql = "SELECT name, email, id FROM users
               WHERE online = 1 LIMIT 1";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        $user = $stmt->fetch();
-        if(!$user) {
+        $user = $stmt->fetch(PDO::FETCH_LAZY);
+        if($user) {
           $data = array('username' => $user->name, 'email'=> $user->email, 'id'=> $user->id);
           $newResponse = $response->withJson($data);
           return $newResponse;
         } else {
-          $data = array('username' => "", 'email'=> "", 'id'=> "$user->id");
+          $data = array('username' => "", 'email'=> "", 'id'=> "");
           $newResponse = $response->withJson($data);
           return $newResponse;
         }
-
-        //send response back with username, email, user_id
-        // if(count($result) == 1) {
-        //
-        // }
 
     } catch (PDOException $pdoException) {
         // Do something with your error message, for now you could just:
