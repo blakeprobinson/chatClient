@@ -23,3 +23,21 @@ h1 {
   right:100px;
   margin:0 auto;
 }
+
+#chat-window {
+  width:350px;
+  position:fixed;
+  right:1px;
+  bottom:-304px;
+}
+
+#scroll-div {
+  height:200px;
+  max-width:100%;
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+
+#table {
+  margin-bottom:50px;
+}

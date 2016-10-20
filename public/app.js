@@ -64,13 +64,20 @@ app.controller("ChatController", function($scope, DataModel, $http) {
   }
 
   $scope.addChat = function() {
+    //keep div scrolled down if necessary
+    var scrollDiv = document.getElementById("scroll-div");
+    var table = document.getElementById("table");
+    console.log(table.clientHeight);
+    scrollDiv.scrollTop = table.clientHeight;
+
+
     if ($scope.newChatMsg != "") {
       var chat = $scope.formatChat("http://placehold.it/16x16",
                            "steve",
                            $scope.newChatMsg,
                            new Date());
 
-      $scope.chatMessages.push(chat);
+      $scope.chatMessages.unshift(chat);
       DataModel.sendMessage(chat, "username").then(function(response) {
         console.log(response)
       }, function(response) {console.log(response)});

@@ -25,8 +25,8 @@
             <p>Try <a href="http://www.slimframework.com">SlimFramework</a>
         <?php endif; ?>
 
-        <div class="container" ng-app="chatApp">
-          <div class="row">
+        <div class="container" ng-app="chatApp" id="chat-window">
+          <!-- <div class="row">
             <div class="col-md-12">
               &nbsp;
             </div>
@@ -35,7 +35,22 @@
             <div class="col-md-4"></div>
             <div class="col-md-4">
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12"> -->
+                  <!-- user info modal -->
+                  <div class="panel panel-default" id="user-info-modal">
+                    <div class="panel-heading">
+                      <h6 class="panel-title">Please enter your contact info. in case the chat is disconnected</h6>
+                    </div>
+                    <div class="panel-body">
+                      <div class="input-group">
+                        <input type="text" class="form-control" placeholder="username" aria-describedby="basic-addon1">
+                      </div>
+                      <div class="input-group">
+                        <input type="email" class="form-control" placeholder="email" aria-describedby="basic-addon1">
+                      </div>
+                      <button type="button" class="btn btn-primary btn-lg">Get chattin'</button>
+                    </div>
+                  </div>
 
                   <div class="panel panel-primary"  ng-controller="ChatController">
                     <div class="panel-heading" style="padding:0 0 0 8px;">
@@ -47,9 +62,9 @@
                       <div class="clearfix"></div>
                     </div>
                     <div class="panel-body" style="padding:0 4px;">
-                      <div class="row">
-                        <div class="col-xs-12" style="max-height:300px;max-width:100%;overflow-y:auto;overflow-x:hidden;">
-                          <table class="table table-hover table-condensed" style="">
+                      <div class="row" style="margin-right:-4px;">
+                        <div class="col-xs-12" id="scroll-div">
+                          <table class="table table-hover table-condensed" id="table">
                             <tr ng-hide="chatMessages.length === 0" ng-repeat="chat in chatMessages | orderBy:origDt | reverse"
                                 style="min-width:100%;max-width:100%;width:100%;">
                               <td><img src="http://placehold.it/16x16" alt="" style="margin-top:8px;"/></td>
@@ -83,12 +98,12 @@
                       </form>
                     </div>
                   </div>
-                </div>
+                <!-- </div>
               </div>
             </div>
             <div class="col-md-4"></div>
           </div>
-        </div>
+        </div> -->
       <button type="button" class="btn btn-primary btn-lg" id="chat-button">Care to chat?</button>
     </body>
 </html>
