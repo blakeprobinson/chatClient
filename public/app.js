@@ -19,13 +19,13 @@ app.factory("DataModel", function($http) {
             });
   }
 
-  // service.getMessages = function() {
-  //   //check to see if any users are online
-  //   //return that users messages...
-  //   return $http.get('api/getmessages', {}).success(function(data) {
-  //               console.log(data);
-  //           });
-  // }
+  service.getMessages = function() {
+    //check to see if any users are online
+    //return that users messages...
+    return $http.get('api/getmessages', {}).success(function(data) {
+                console.log(data);
+            });
+  }
 
 
 
@@ -68,6 +68,10 @@ app.controller("ChatController", function($scope, DataModel, $http) {
     user.email = $scope.user.email;
     console.log(user);
 
+    //bring up the chat window
+    var chatWindow = document.getElementById("chat-window");
+    chatWindow.style.bottom = "0px";
+
     DataModel.createUser(user);
   }
 
@@ -84,6 +88,7 @@ app.controller("ChatController", function($scope, DataModel, $http) {
     //keep div scrolled down if necessary
     var scrollDiv = document.getElementById("scroll-div");
     var table = document.getElementById("table");
+
     console.log(table.clientHeight);
     scrollDiv.scrollTop = table.clientHeight;
 

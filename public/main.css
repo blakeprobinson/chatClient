@@ -29,6 +29,7 @@ h1 {
   position:fixed;
   right:1px;
   bottom:-304px;
+  transition: bottom 1.5s ease 0s;
 }
 
 #scroll-div {
@@ -40,4 +41,12 @@ h1 {
 
 #table {
   margin-bottom:50px;
+}
+
+#user-info-modal {
+  position:fixed;
+  width:350px;
+  right:1px;
+  bottom:0px;
+  transition: bottom 1.5s ease 0s;
 }
