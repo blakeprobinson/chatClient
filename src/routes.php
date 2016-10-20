@@ -2,17 +2,11 @@
 // Routes
 
 $app->get('/', function ($request, $response, $args) {
-    // Sample log message
-    $this->logger->info("Slim-Skeleton '/' route");
-    // return $response;
     // Render index view
     return $this->renderer->render($response, 'index.phtml', $args);
 });
 
 $app->get('/admin', function ($request, $response, $args) {
-    // Sample log message
-    $this->logger->info("Slim-Skeleton '/' route");
-    // return $response;
     // Render index view
     return $this->renderer->render($response, 'admin.phtml', $args);
 });
@@ -44,9 +38,9 @@ $app->post('/api/user', function ($request, $response, $args) {
 
     $contents;
     $body = $request->getParsedBody();
-    $name = $body['name'];
+    $name = $body['username'];
     $email = $body['email'];
-    $online = true;
+    $online = 1;
 
     try {
         $sql = "INSERT INTO users VALUES (NULL, :name, :email, :online, NOW())";
@@ -58,7 +52,31 @@ $app->post('/api/user', function ($request, $response, $args) {
 
     } catch (PDOException $pdoException) {
         // Do something with your error message, for now you could just:
-         echo 'exception reached';
+         echo $pdoException->getMessage();
     }
     return $response;
 });
+
+// $app->get('/api/getmessages', function ($request, $response, $args) {
+//
+//     $contents;
+//     $body = $request->getParsedBody();
+//     $name = $body['username'];
+//     $email = $body['email'];
+//     $online = 1;
+//     //SELECT * FROM messages
+//             //ORDER BY `date` DESC
+//     try {
+//         $sql = "INSERT INTO users VALUES (NULL, :name, :email, :online, NOW())";
+//         $stmt = $this->db->prepare($sql);
+//         $stmt->bindParam(':name', $name);
+//         $stmt->bindParam(':email', $email);
+//         $stmt->bindParam(':online', $online);
+//         $stmt->execute();
+//
+//     } catch (PDOException $pdoException) {
+//         // Do something with your error message, for now you could just:
+//          echo $pdoException->getMessage();
+//     }
+//     return $response;
+// });

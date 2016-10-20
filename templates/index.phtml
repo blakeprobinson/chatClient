@@ -25,7 +25,7 @@
             <p>Try <a href="http://www.slimframework.com">SlimFramework</a>
         <?php endif; ?>
 
-        <div class="container" ng-app="chatApp" id="chat-window">
+        <div class="container" ng-app="chatApp" id="chat-window" ng-controller="ChatController">
           <!-- <div class="row">
             <div class="col-md-12">
               &nbsp;
@@ -43,16 +43,16 @@
                     </div>
                     <div class="panel-body">
                       <div class="input-group">
-                        <input type="text" class="form-control" placeholder="username" aria-describedby="basic-addon1">
+                        <input type="text" class="form-control" ng-model="user.username" placeholder="username" aria-describedby="basic-addon1">
                       </div>
                       <div class="input-group">
-                        <input type="email" class="form-control" placeholder="email" aria-describedby="basic-addon1">
+                        <input type="email" class="form-control" ng-model="user.email" placeholder="email" aria-describedby="basic-addon1">
                       </div>
-                      <button type="button" class="btn btn-primary btn-lg">Get chattin'</button>
+                      <button type="button" ng-click="addUser()" class="btn btn-primary btn-lg">Get chattin'</button>
                     </div>
                   </div>
 
-                  <div class="panel panel-primary"  ng-controller="ChatController">
+                  <div class="panel panel-primary">
                     <div class="panel-heading" style="padding:0 0 0 8px;">
                       <span class="glyphicon glyphicon-user"></span>
                       <h6 class="panel-title" style="display:inline;">Chat</h6>

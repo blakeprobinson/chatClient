@@ -19,6 +19,14 @@ app.factory("DataModel", function($http) {
             });
   }
 
+  // service.getMessages = function() {
+  //   //check to see if any users are online
+  //   //return that users messages...
+  //   return $http.get('api/getmessages', {}).success(function(data) {
+  //               console.log(data);
+  //           });
+  // }
+
 
 
   return service;
@@ -53,6 +61,15 @@ app.controller("ChatController", function($scope, DataModel, $http) {
       //re-list all the messages by pulling them from the server every 3sec.
       //$scope.pidMessages = window.setInterval($scope.listMessages, 3000);
   };
+
+  $scope.addUser = function() {
+    var user = {};
+    user.username = $scope.user.username;
+    user.email = $scope.user.email;
+    console.log(user);
+
+    DataModel.createUser(user);
+  }
 
   $scope.formatChat = function(icon,username,text,origDt) {
     var chat = {};
