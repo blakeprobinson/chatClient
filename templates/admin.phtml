@@ -15,16 +15,6 @@
     <body>
         <h1>chatClient</h1>
         <div>an embeddable chat client in angular and php</div>
-        <br>
-        <div>to test, open the chat window below. Then, click <a href="/">here</a> to chat back.</div>
-        <br>
-        <div>view on <a href="https://github.com/blakeprobinson/chatClient">github</a></div>
-        <?php if (isset($name)) : ?>
-            <h2>Hello <?= htmlspecialchars($name); ?>!</h2>
-        <?php else: ?>
-            <p>Try <a href="http://www.slimframework.com">SlimFramework</a>
-        <?php endif; ?>
-
         <div class="container" ng-app="chatApp">
           <div class="row">
             <div class="col-md-12">
@@ -36,11 +26,10 @@
             <div class="col-md-4">
               <div class="row">
                 <div class="col-md-12">
-
                   <div class="panel panel-primary"  ng-controller="ChatController">
                     <div class="panel-heading" style="padding:0 0 0 8px;">
                       <span class="glyphicon glyphicon-user"></span>
-                      <h6 class="panel-title" style="display:inline;">Chat</h6>
+                      <h6 class="panel-title" style="display:inline;">Rep Chat</h6>
                       <div class="btn-group btn-group-xs pull-right">
                         <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-remove"></span></button>
                       </div>
@@ -54,7 +43,7 @@
                                 style="min-width:100%;max-width:100%;width:100%;">
                               <td><img src="http://placehold.it/16x16" alt="" style="margin-top:8px;"/></td>
                               <td>
-                                <h6>{{chat.username}} - {{chat.origDt | date:'h:mma'}}</h6>
+                                <h6>{{chat.username}}</h6>
                               </td>
                               <td>
                               <p class="word-wrap:break-word"><small>{{chat.text}}</small></p>
@@ -89,6 +78,5 @@
             <div class="col-md-4"></div>
           </div>
         </div>
-      <button type="button" class="btn btn-primary btn-lg" id="chat-button">Care to chat?</button>
     </body>
 </html>
