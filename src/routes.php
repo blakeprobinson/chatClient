@@ -1,52 +1,62 @@
 <?php
 // Routes
 
-$app->get('/[{name}]', function ($request, $response, $args) {
+$app->get('/', function ($request, $response, $args) {
     // Sample log message
     $this->logger->info("Slim-Skeleton '/' route");
-    $uri = $request->getUri();
-    $username = $uri->getPath();
-    $message = $username;
-    $ip = $username;
-
-    $statement = $this->db->query("INSERT INTO messages
-        VALUES (NULL, '{$username}', '{$message}', '{$ip}', NOW())");
-    if(!$statement) {
-      var_dump($statement);
-      die();
-    }
-
     // return $response;
     // Render index view
     return $this->renderer->render($response, 'index.phtml', $args);
 });
 
-//chat route
-
-//message route
-$app->put('/api/message', function ($request, $response, $args) {
+$app->get('/admin', function ($request, $response, $args) {
     // Sample log message
-    var_dump($request);
-
     $this->logger->info("Slim-Skeleton '/' route");
-    $contents;
-    if($request->isPost()) {
-      $parsedBody = $request->getParsedBody();
-      $contents = $parsedBody->getContents();
-    }
-    $uri = "test";
-    $username = "test";
-    $message = $contents;
-    $ip = $username;
-
-    $statement = $this->db->query("INSERT INTO messages
-        VALUES (NULL, '{$username}', '{$message}', '{$ip}', NOW())");
-    if(!$statement) {
-      var_dump($statement);
-      die();
-    }
-
     // return $response;
     // Render index view
+    return $this->renderer->render($response, 'admin.phtml', $args);
+});
+
+//chat route
+
+$app->post('/api/message', function ($request, $response, $args) {
+
+    $contents;
+    $body = $request->getParsedBody();
+    $ip = 'test';
+
+    try {
+        $sql = "INSERT INTO messages VALUES (NULL, :username, :message, :ip, NOW())";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':username', $body['username']);
+        $stmt->bindParam(':message', $body['text']);
+        $stmt->bindParam(':ip', $ip);
+        $stmt->execute();
+
+    } catch (PDOException $pdoException) {
+        // Do something with your error message, for now you could just:
+         echo 'exception reached';
+    }
+    return $response;
+});
+
+$app->post('/api/user', function ($request, $response, $args) {
+
+    $contents;
+    $body = $request->getParsedBody();
+    $ip = 'test';
+
+    try {
+        $sql = "INSERT INTO messages VALUES (NULL, :username, :message, :ip, NOW())";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':username', $body['username']);
+        $stmt->bindParam(':message', $body['text']);
+        $stmt->bindParam(':ip', $ip);
+        $stmt->execute();
+
+    } catch (PDOException $pdoException) {
+        // Do something with your error message, for now you could just:
+         echo 'exception reached';
+    }
     return $response;
 });
