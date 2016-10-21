@@ -20,9 +20,13 @@ app.factory("DataModel", function($http) {
   service.getMessages = function() {
     //check to see if any users are online
     //return that users messages...
-    return $http.get('api/getmessages', {}).success(function(data) {
-                console.log(data);
-            });
+    return $http.get('api/getOnlineUser', {})
+      .then(function(data) {
+          console.log(data);
+          var id = data.data.id;
+          var url = 'api/getmessages/' + id;
+          return $http.get(url, {});
+      }, function(error) {console.log(error)})
   }
 
 
@@ -55,6 +59,9 @@ app.controller("ChatController", function($scope, DataModel, $http) {
 
   $scope.init = function() {
       //get all the messages to start.
+      DataModel.getMessages().then(function(data){
+        console.log(data);
+      });
       //$scope.listMessages();
       //re-list all the messages by pulling them from the server every 3sec.
       //$scope.pidMessages = window.setInterval($scope.listMessages, 3000);

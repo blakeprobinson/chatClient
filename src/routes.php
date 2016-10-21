@@ -19,11 +19,11 @@ $app->post('/api/message', function($request, $response, $args) {
       $ip = 'test';
 
       try {
-          $sql = "INSERT INTO messages VALUES (NULL, :username, :message, :ip, NOW(), :id)";
+          $sql = "INSERT INTO messages VALUES (NULL, :username, :message, :ip, NOW(), :user_id)";
           $stmt = $this->db->prepare($sql);
           $stmt->bindParam(':username', $body['username']);
           $stmt->bindParam(':message', $body['text']);
-          $stmt->bindParam(':id', $body['id']);
+          $stmt->bindParam(':iser_id', $body['id']);
           $stmt->bindParam(':ip', $ip);
           $stmt->execute();
 
@@ -53,7 +53,7 @@ $app->post('/api/user', function ($request, $response, $args) {
         $data = array('id' => $id);
         //consider creating update function
         //that turns all other users to offline
-        
+
         $newResponse = $response->withJson($data);
         return $newResponse;
 
@@ -65,7 +65,7 @@ $app->post('/api/user', function ($request, $response, $args) {
     return $response;
 });
 
-$app->get('/api/getmessages', function ($request, $response, $args) {
+$app->get('/api/getOnlineUser', function ($request, $response, $args) {
 
     $data;
     $newResponse;
@@ -86,7 +86,26 @@ $app->get('/api/getmessages', function ($request, $response, $args) {
         }
 
     } catch (PDOException $pdoException) {
-        // Do something with your error message, for now you could just:
          echo $pdoException->getMessage();
     }
+});
+
+$app->get('/api/getmessages/{user_id}', function ($request, $response, $args) {
+  try {
+    $sql = "SELECT username, message, date FROM messages
+          WHERE user_id = :user_id";
+    $stmt = $this->db->prepare($sql);
+    $user_id = $args['user_id'];
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->execute();
+    $result = array();
+    while($row = $stmt->fetchObject()) {
+        $result[] = $row;
+    }
+    $newResponse = $response->withJson($result);
+    return $newResponse;
+  } catch (PDOException $pdoException) {
+      // Do something with your error message, for now you could just:
+       echo $pdoException->getMessage();
+  }
 });
