@@ -15,7 +15,18 @@
     <body>
         <h1>chatClient</h1>
         <div>an embeddable chat client in angular and php</div>
-        <div class="container" ng-app="chatApp">
+        <div class="container" ng-app="chatApp" ng-controller="ChatController">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h6 class="panel-title">Please enter your name.</h6>
+            </div>
+            <div class="panel-body">
+              <div class="input-group">
+                <input type="text" class="form-control" ng-model="adminName" placeholder="Name" aria-describedby="basic-addon1">
+              </div>
+              <button type="button" ng-click="addAdmin()" class="btn btn-primary btn-lg">Get chattin'</button>
+            </div>
+          </div>
           <div class="row">
             <div class="col-md-12">
               &nbsp;
@@ -26,7 +37,7 @@
             <div class="col-md-4">
               <div class="row">
                 <div class="col-md-12">
-                  <div class="panel panel-primary"  ng-controller="ChatController">
+                  <div class="panel panel-primary">
                     <div class="panel-heading" style="padding:0 0 0 8px;">
                       <span class="glyphicon glyphicon-user"></span>
                       <h6 class="panel-title" style="display:inline;">Rep Chat</h6>
@@ -37,11 +48,10 @@
                     </div>
                     <div class="panel-body" style="padding:0 4px;">
                       <div class="row">
-                        <div class="col-xs-12" style="max-height:300px;max-width:100%;overflow-y:auto;overflow-x:hidden;">
-                          <table class="table table-hover table-condensed" style="">
+                        <div class="col-xs-12 scroll-div" style="max-height:300px;max-width:100%;overflow-y:auto;overflow-x:hidden;">
+                          <table class="table table-hover table-condensed">
                             <tr ng-hide="chatMessages.length === 0" ng-repeat="chat in chatMessages | orderBy:origDt | reverse"
                                 style="min-width:100%;max-width:100%;width:100%;">
-                              <td><img src="http://placehold.it/16x16" alt="" style="margin-top:8px;"/></td>
                               <td>
                                 <h6>{{chat.username}}</h6>
                               </td>

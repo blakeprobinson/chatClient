@@ -32,14 +32,14 @@ h1 {
   transition: bottom 1.5s ease 0s;
 }
 
-#scroll-div {
+.scroll-div {
   height:200px;
   max-width:100%;
   overflow-y:auto;
   overflow-x:hidden;
 }
 
-#table {
+.table {
   margin-bottom:50px;
 }
 
