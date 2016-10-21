@@ -19,10 +19,11 @@ $app->post('/api/message', function($request, $response, $args) {
       $ip = 'test';
 
       try {
-          $sql = "INSERT INTO messages VALUES (NULL, :username, :message, :ip, NOW())";
+          $sql = "INSERT INTO messages VALUES (NULL, :username, :message, :ip, NOW(), :id)";
           $stmt = $this->db->prepare($sql);
           $stmt->bindParam(':username', $body['username']);
           $stmt->bindParam(':message', $body['text']);
+          $stmt->bindParam(':id', $body['id']);
           $stmt->bindParam(':ip', $ip);
           $stmt->execute();
 
@@ -47,6 +48,15 @@ $app->post('/api/user', function ($request, $response, $args) {
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':online', $online);
         $stmt->execute();
+        //get new user id to send back in response
+        $id = $this->db->lastInsertId();
+        $data = array('id' => $id);
+        //consider creating update function
+        //that turns all other users to offline
+        
+        $newResponse = $response->withJson($data);
+        return $newResponse;
+
 
     } catch (PDOException $pdoException) {
         // Do something with your error message, for now you could just:

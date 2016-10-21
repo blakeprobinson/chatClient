@@ -7,9 +7,7 @@ app.factory("DataModel", function($http) {
 
     console.log(chat);
     //return $http.put('api/message', JSON.stringify(chat));
-    return $http.post('api/message', chat).success(function(data) {
-                console.log(data);
-            });
+    return $http.post('api/message', chat);
   }
 
   service.createUser = function(user) {
@@ -73,15 +71,19 @@ app.controller("ChatController", function($scope, DataModel, $http) {
     var chatWindow = document.getElementById("chat-window");
     chatWindow.style.bottom = "0px";
 
-    DataModel.createUser(user);
+    DataModel.createUser(user).then(function(response) {
+      $scope.user.userId = response.data.id;
+      console.log(response.data.id);
+    });
   }
 
-  $scope.formatChat = function(icon,username,text,origDt) {
+  $scope.formatChat = function(icon,username,text,origDt, userId) {
     var chat = {};
     chat.icon = icon;
     chat.username = username;
     chat.text = text;
     chat.origDt = origDt;
+    chat.id = userId;
     return chat;
   }
 
@@ -98,13 +100,14 @@ app.controller("ChatController", function($scope, DataModel, $http) {
       var chat = $scope.formatChat("http://placehold.it/16x16",
                            "steve",
                            $scope.newChatMsg,
-                           new Date());
+                           new Date(),
+                           $scope.userId);
 
       $scope.chatMessages.unshift(chat);
       DataModel.sendMessage(chat, "username").then(function(response) {
         console.log(response)
       }, function(response) {console.log(response)});
-      $scope.newChatMsg = "";
+        $scope.newChatMsg = "";
     }
     else {
 
