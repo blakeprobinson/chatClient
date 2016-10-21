@@ -17,19 +17,16 @@ app.factory("DataModel", function($http) {
             });
   }
 
-  service.getMessages = function() {
+  service.getOnlineUser = function() {
     //check to see if any users are online
     //return that users messages...
-    return $http.get('api/getOnlineUser', {})
-      .then(function(data) {
-          console.log(data);
-          var id = data.data.id;
-          var url = 'api/getmessages/' + id;
-          return $http.get(url, {});
-      }, function(error) {console.log(error)})
+    return $http.get('api/getOnlineUser', {});
+
   }
 
-
+  service.getMessages = function(data, url) {
+    return $http.get(url, {});
+  }
 
   return service;
 });
@@ -37,6 +34,8 @@ app.factory("DataModel", function($http) {
 app.controller("ChatController", function($scope, DataModel, $http) {
   $scope.chatMessages = [];
   $scope.pidMessages = null;
+  $scope.user = {};
+  $scope.adminName = "";
 
   $scope.listMessages = function(wasListingForMySubmission) {
         return $http.post($scope.urlListMessages, {}).success(function(data) {
@@ -59,12 +58,32 @@ app.controller("ChatController", function($scope, DataModel, $http) {
 
   $scope.init = function() {
       //get all the messages to start.
-      DataModel.getMessages().then(function(data){
-        console.log(data);
+      DataModel.getOnlineUser().then(function(data){
+        var id = data.data.id;
+        if(id !=="") {
+          var id = data.data.id;
+          var url = 'api/getmessages/' + id;
+          $scope.user.username = data.data.username;
+          $scope.user.email = data.data.email;
+          $scope.user.userId = data.data.id;
+          console.log('this is scope.user', $scope.user);
+            return DataModel.getMessages(data, url);
+        } else {
+
+        }
+      }).then(function(data){
+        $scope.chatMessages = data.data.map(function(element) {
+          return $scope.formatChat(element.username, element.message, element.date, element.user_id);
+      });
       });
       //$scope.listMessages();
       //re-list all the messages by pulling them from the server every 3sec.
       //$scope.pidMessages = window.setInterval($scope.listMessages, 3000);
+  };
+
+  $scope.addAdmin = function() {
+    var panel = document.getElementsByClassName("panel")[0];
+    panel.style.display = "none";
   };
 
   $scope.addUser = function() {
@@ -84,9 +103,8 @@ app.controller("ChatController", function($scope, DataModel, $http) {
     });
   }
 
-  $scope.formatChat = function(icon,username,text,origDt, userId) {
+  $scope.formatChat = function(username,text,origDt, userId) {
     var chat = {};
-    chat.icon = icon;
     chat.username = username;
     chat.text = text;
     chat.origDt = origDt;
@@ -96,22 +114,20 @@ app.controller("ChatController", function($scope, DataModel, $http) {
 
   $scope.addChat = function() {
     //keep div scrolled down if necessary
-    var scrollDiv = document.getElementById("scroll-div");
-    var table = document.getElementById("table");
-
-    console.log(table.clientHeight);
+    var scrollDiv = document.getElementsByClassName("scroll-div")[0];
+    var table = document.getElementsByClassName("table")[0];
     scrollDiv.scrollTop = table.clientHeight;
 
 
     if ($scope.newChatMsg != "") {
-      var chat = $scope.formatChat("http://placehold.it/16x16",
-                           "steve",
+      var chat = $scope.formatChat(
+                           $scope.user.username,
                            $scope.newChatMsg,
                            new Date(),
-                           $scope.userId);
+                           $scope.user.userId);
 
       $scope.chatMessages.unshift(chat);
-      DataModel.sendMessage(chat, "username").then(function(response) {
+      DataModel.sendMessage(chat).then(function(response) {
         console.log(response)
       }, function(response) {console.log(response)});
         $scope.newChatMsg = "";

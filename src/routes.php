@@ -23,7 +23,7 @@ $app->post('/api/message', function($request, $response, $args) {
           $stmt = $this->db->prepare($sql);
           $stmt->bindParam(':username', $body['username']);
           $stmt->bindParam(':message', $body['text']);
-          $stmt->bindParam(':iser_id', $body['id']);
+          $stmt->bindParam(':user_id', $body['id']);
           $stmt->bindParam(':ip', $ip);
           $stmt->execute();
 
@@ -92,8 +92,8 @@ $app->get('/api/getOnlineUser', function ($request, $response, $args) {
 
 $app->get('/api/getmessages/{user_id}', function ($request, $response, $args) {
   try {
-    $sql = "SELECT username, message, date FROM messages
-          WHERE user_id = :user_id";
+    $sql = "SELECT username, message, date, user_id FROM messages
+          WHERE user_id = :user_id ORDER BY date DESC";
     $stmt = $this->db->prepare($sql);
     $user_id = $args['user_id'];
     $stmt->bindParam(':user_id', $user_id);
