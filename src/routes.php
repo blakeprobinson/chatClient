@@ -69,6 +69,7 @@ $app->get('/api/getOnlineUser', function ($request, $response, $args) {
 
     $data;
     $newResponse;
+
     try {
         $sql = "SELECT name, email, id FROM users
               WHERE online = 1 LIMIT 1";
@@ -84,6 +85,22 @@ $app->get('/api/getOnlineUser', function ($request, $response, $args) {
           $newResponse = $response->withJson($data);
           return $newResponse;
         }
+
+    } catch (PDOException $pdoException) {
+         echo $pdoException->getMessage();
+    }
+});
+
+$app->put('/api/userOffline/{user_id}', function ($request, $response, $args) {
+
+    try {
+        $sql = "UPDATE users SET online = 0 WHERE id = :user_id";
+        $stmt = $this->db->prepare($sql);
+        $user_id = $args['user_id'];
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_LAZY);
+        return $response;
 
     } catch (PDOException $pdoException) {
          echo $pdoException->getMessage();

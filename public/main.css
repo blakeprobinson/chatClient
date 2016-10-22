@@ -22,6 +22,13 @@ h1 {
   bottom:0px;
   right:100px;
   margin:0 auto;
+  opacity:1;
+  transition: bottom .5s ease 0s;
+}
+
+#user-chatbox {
+  position:fixed;
+  bottom:-400px;
 }
 
 #chat-window {
@@ -47,6 +54,14 @@ h1 {
   position:fixed;
   width:350px;
   right:1px;
-  bottom:0px;
+  bottom:-250px;
   transition: bottom 1.5s ease 0s;
+}
+
+.chatbox {
+  display:none;
+}
+
+.panel {
+
 }

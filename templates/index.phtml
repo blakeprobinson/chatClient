@@ -32,16 +32,16 @@
               <div class="input-group">
                 <input type="email" class="form-control" ng-model="user.email" placeholder="email" aria-describedby="basic-addon1">
               </div>
-              <button type="button" ng-click="addUser()" class="btn btn-primary btn-lg">Get chattin'</button>
+              <button type="button" ng-click="addUser()" type="submit" class="btn btn-primary btn-lg">Get chattin'</button>
             </div>
           </div>
 
-          <div class="panel panel-primary">
+          <div class="panel panel-primary" id="user-chatbox">
             <div class="panel-heading" style="padding:0 0 0 8px;">
               <span class="glyphicon glyphicon-user"></span>
               <h6 class="panel-title" style="display:inline;">Chat</h6>
               <div class="btn-group btn-group-xs pull-right">
-                <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-remove"></span></button>
+                <button type="button" class="btn btn-primary" ng-click="endChat()"><span class="glyphicon glyphicon-remove"></span></button>
               </div>
               <div class="clearfix"></div>
             </div>
@@ -81,6 +81,6 @@
               </form>
             </div>
           </div>
-      <button type="button" class="btn btn-primary btn-lg" id="chat-button">Care to chat?</button>
+      <button type="button" class="btn btn-primary btn-lg" id="chat-button" ng-click="acceptInvite()">Care to chat?</button>
     </body>
 </html>

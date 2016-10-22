@@ -16,6 +16,7 @@
         <h1>chatClient</h1>
         <div>an embeddable chat client in angular and php</div>
         <div class="container" ng-app="chatApp" ng-controller="ChatController">
+          <br>
           <div class="panel panel-default">
             <div class="panel-heading">
               <h6 class="panel-title">Please enter your name.</h6>
@@ -32,7 +33,7 @@
               &nbsp;
             </div>
           </div>
-          <div class="row">
+          <div class="row chatbox">
             <div class="col-md-4"></div>
             <div class="col-md-4">
               <div class="row">
@@ -40,9 +41,9 @@
                   <div class="panel panel-primary">
                     <div class="panel-heading" style="padding:0 0 0 8px;">
                       <span class="glyphicon glyphicon-user"></span>
-                      <h6 class="panel-title" style="display:inline;">Rep Chat</h6>
+                      <h6 class="panel-title" style="display:inline;">{{adminTitle}}</h6>
                       <div class="btn-group btn-group-xs pull-right">
-                        <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-remove"></span></button>
+                        <button type="button" class="btn btn-primary" ng-hide="chatMessages.length === 0" ng-click="endChat()"><span>End chat</span></button>
                       </div>
                       <div class="clearfix"></div>
                     </div>
@@ -53,7 +54,7 @@
                             <tr ng-hide="chatMessages.length === 0" ng-repeat="chat in chatMessages | orderBy:origDt | reverse"
                                 style="min-width:100%;max-width:100%;width:100%;">
                               <td>
-                                <h6>{{chat.username}}</h6>
+                                <h6>{{chat.username}} - {{chat.origDt | date:'h:mma'}}</h6>
                               </td>
                               <td>
                               <p class="word-wrap:break-word"><small>{{chat.text}}</small></p>
@@ -61,7 +62,7 @@
                             </tr>
                             <tr ng-show="chatMessages.length === 0">
                               <td>
-                                <p>Nothin' here. <strong>Say something!</strong></p>
+                                <p><strong>{{ chatFiller }}</strong></p>
                               </td>
                             </tr>
                           </table>
