@@ -7,12 +7,12 @@ $password;
 $db;
 
 
-if(getenv("CLEARDB_DATABASE_URL")) {
-  $url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+if(getenv("JAWSDB_MARIA_URL")) {
+  $url = parse_url(getenv("JAWSDB_MARIA_URL"));
   $server = $url["host"];
   $username = $url["user"];
   $password = $url["pass"];
-  $db = substr($url["path"], 1);
+  $db = ltrim($url['path'],'/');
 } else {
   $url = parse_url('mysql://b222547e5e1c7a:9fe8fc3f@us-cdbr-iron-east-04.cleardb.net/heroku_7a1e3191145a93c?reconnect=true');
   $server = 'localhost';
