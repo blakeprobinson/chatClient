@@ -17,12 +17,12 @@
         <div>an embeddable chat client in angular and php</div>
         <div class="container" ng-app="chatApp" ng-controller="ChatController">
           <br>
-          <div class="panel panel-default">
+          <div class="panel panel-default admin-panel">
             <div class="panel-heading">
               <h6 class="panel-title">Please enter your name.</h6>
             </div>
             <div class="panel-body">
-              <div class="input-group">
+              <div class="input-group user-input-group">
                 <input type="text" class="form-control" ng-model="adminName" placeholder="Name" aria-describedby="basic-addon1">
               </div>
               <button type="button" ng-click="addAdmin()" class="btn btn-primary btn-lg">Get chattin'</button>
@@ -54,7 +54,7 @@
                             <tr ng-hide="chatMessages.length === 0" ng-repeat="chat in chatMessages | orderBy:origDt | reverse"
                                 style="min-width:100%;max-width:100%;width:100%;">
                               <td>
-                                <h6>{{chat.username}} - {{chat.origDt | date:'h:mma'}}</h6>
+                                <h6>{{chat.author}} - {{chat.origDt | date:'h:mma'}}</h6>
                               </td>
                               <td>
                               <p class="word-wrap:break-word"><small>{{chat.text}}</small></p>

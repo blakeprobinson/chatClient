@@ -29,6 +29,7 @@ h1 {
 #user-chatbox {
   position:fixed;
   bottom:-400px;
+  transition: bottom 1.5s ease 0s;
 }
 
 #chat-window {
@@ -62,6 +63,12 @@ h1 {
   display:none;
 }
 
-.panel {
+.user-input-group {
+  margin: 0 auto;
+  margin-bottom: 15px;
+}
 
+.admin-panel {
+  width:300px;
+  margin:0 auto;
 }

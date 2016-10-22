@@ -19,9 +19,12 @@ $app->post('/api/message', function($request, $response, $args) {
       $ip = 'test';
 
       try {
-          $sql = "INSERT INTO messages VALUES (NULL, :username, :message, :ip, NOW(), :user_id)";
+          $sql = "INSERT INTO messages VALUES (NULL, :message, :ip, NOW(), :user_id, :author)";
           $stmt = $this->db->prepare($sql);
-          $stmt->bindParam(':username', $body['username']);
+          //to be deleted
+          // $stmt->bindParam(':username', $body['author']);
+          //
+          $stmt->bindParam(':author', $body['author']);
           $stmt->bindParam(':message', $body['text']);
           $stmt->bindParam(':user_id', $body['id']);
           $stmt->bindParam(':ip', $ip);
@@ -42,8 +45,14 @@ $app->post('/api/user', function ($request, $response, $args) {
     $online = 1;
 
     try {
-        $sql = "INSERT INTO users VALUES (NULL, :name, :email, :online, NOW())";
-        $stmt = $this->db->prepare($sql);
+        //consider creating update function
+        //that turns all other users to offline
+        $sqlUpdate = "UPDATE users SET online=0";
+        $stmtUpdate = $this->db->prepare($sqlUpdate);
+        $stmtUpdate->execute();
+        //add new user
+        $sqlInsert = "INSERT INTO users VALUES (NULL, :name, :email, :online, NOW())";
+        $stmt = $this->db->prepare($sqlInsert);
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':online', $online);
@@ -51,8 +60,6 @@ $app->post('/api/user', function ($request, $response, $args) {
         //get new user id to send back in response
         $id = $this->db->lastInsertId();
         $data = array('id' => $id);
-        //consider creating update function
-        //that turns all other users to offline
 
         $newResponse = $response->withJson($data);
         return $newResponse;
@@ -109,7 +116,7 @@ $app->put('/api/userOffline/{user_id}', function ($request, $response, $args) {
 
 $app->get('/api/getmessages/{user_id}', function ($request, $response, $args) {
   try {
-    $sql = "SELECT username, message, date, user_id FROM messages
+    $sql = "SELECT author, message, date, user_id FROM messages
           WHERE user_id = :user_id ORDER BY date DESC";
     $stmt = $this->db->prepare($sql);
     $user_id = $args['user_id'];

@@ -69,15 +69,19 @@ app.controller("ChatController", function($scope, DataModel, $http, $q) {
           return defer.promise;
         }
       }).then(function(data){
-        $scope.chatMessages = data.data.map(function(element) {
-          return $scope.formatChat(element.username, element.message, element.date, element.user_id);
-        });
+        console.log('this is data.data', data.data);
+        if(Object.prototype.toString.call( data.data ) === '[object Array]') {
+          $scope.chatMessages = data.data.map(function(element) {
+            return $scope.formatChat(element.author, element.message, element.date, element.user_id);
+          });
+        }
+
       }, function(error) {
         console.log(error);
       });
     };
 
-  $scope.init = function() {
+  $scope.beginCheckingForMessages = function() {
       //get all the messages to start.
       $scope.listMessages();
       //re-list all the messages by pulling them from the server every 3sec.
@@ -89,6 +93,7 @@ app.controller("ChatController", function($scope, DataModel, $http, $q) {
     panel.style.display = "none";
     var chatBox = document.getElementsByClassName("chatbox")[0];
     chatBox.style.display = "block";
+    $scope.beginCheckingForMessages();
   };
 
   $scope.addUser = function() {
@@ -109,12 +114,16 @@ app.controller("ChatController", function($scope, DataModel, $http, $q) {
     DataModel.createUser(user).then(function(response) {
       $scope.user.userId = response.data.id;
       console.log(response.data.id);
+      //begin
+      $scope.beginCheckingForMessages();
     });
+
+
   }
 
-  $scope.formatChat = function(username,text,origDt, userId) {
+  $scope.formatChat = function(author,text,origDt, userId) {
     var chat = {};
-    chat.username = username;
+    chat.author = author;
     chat.text = text;
     chat.origDt = (typeof origDt === 'string') ? formatDate(origDt):origDt;
     chat.id = userId;
@@ -123,7 +132,7 @@ app.controller("ChatController", function($scope, DataModel, $http, $q) {
 
   function formatDate (sqlDate) {
     var dateArr = sqlDate.split(/[- :]/);
-    return new Date(Date.UTC(dateArr[0], dateArr[1]-1, dateArr[2], dateArr[3], dateArr[4], dateArr[5]));
+    return new Date(dateArr[0], dateArr[1]-1, dateArr[2], dateArr[3], dateArr[4], dateArr[5]);
   };
 
   $scope.addChat = function() {
@@ -137,12 +146,23 @@ app.controller("ChatController", function($scope, DataModel, $http, $q) {
       scrollDiv.scrollTop = table.clientHeight;
 
       if ($scope.newChatMsg != "") {
-        var chat = $scope.formatChat(
-                             $scope.user.username,
-                             $scope.newChatMsg,
-                             new Date(),
-                             $scope.user.userId);
-
+        var chat;
+        //if chat is from user since adminName
+        //is not populated.
+        if($scope.adminName === "") {
+          chat = $scope.formatChat(
+                               $scope.user.username,
+                               $scope.newChatMsg,
+                               new Date(),
+                               $scope.user.userId);
+        } else {
+          console.log('this is admin name', $scope.adminName);
+          chat = $scope.formatChat(
+                               $scope.adminName,
+                               $scope.newChatMsg,
+                               new Date(),
+                               $scope.user.userId);
+        }
         $scope.chatMessages.unshift(chat);
         DataModel.sendMessage(chat).then(function(response) {
           console.log(response)
@@ -156,19 +176,28 @@ app.controller("ChatController", function($scope, DataModel, $http, $q) {
   };
 
   $scope.acceptInvite = function() {
-    var loginWindow = document.getElementById("user-info-modal");
-    loginWindow.style.bottom = "-20px";
+    //if a user already exists
+    if($scope.user.username) {
+      var userChatbox = document.getElementById("user-chatbox");
+      userChatbox.style.bottom = "-20px";
+    } else {
+      var loginWindow = document.getElementById("user-info-modal");
+      loginWindow.style.bottom = "-20px";
+    }
+
     var inviteButton = document.getElementById("chat-button");
     inviteButton.style.bottom = "-150px";
   };
 
   $scope.endChat = function() {
+    var userChatbox = document.getElementById("user-chatbox");
+    userChatbox.style.bottom = "-350px";
+    var inviteButton = document.getElementById("chat-button");
+    inviteButton.style.bottom = "0px";
     DataModel.makeUserOffline($scope.user).then(function(data) {
       $scope.listMessages();
     });
   }
-
-  $scope.init();
 
 });
 
