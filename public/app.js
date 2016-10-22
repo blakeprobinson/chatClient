@@ -132,7 +132,7 @@ app.controller("ChatController", function($scope, DataModel, $http, $q) {
 
   function formatDate (sqlDate) {
     var dateArr = sqlDate.split(/[- :]/);
-    return new Date(dateArr[0], dateArr[1]-1, dateArr[2], dateArr[3], dateArr[4], dateArr[5]);
+    return new Date(Date.UTC(dateArr[0], dateArr[1]-1, dateArr[2], dateArr[3], dateArr[4], dateArr[5]));
   };
 
   $scope.addChat = function() {
@@ -191,9 +191,14 @@ app.controller("ChatController", function($scope, DataModel, $http, $q) {
 
   $scope.endChat = function() {
     var userChatbox = document.getElementById("user-chatbox");
-    userChatbox.style.bottom = "-350px";
+    if(userChatbox) {
+      userChatbox.style.bottom = "-350px";
+    }
+
     var inviteButton = document.getElementById("chat-button");
-    inviteButton.style.bottom = "0px";
+    if(inviteButton) {
+      inviteButton.style.bottom = "0px";
+    }
     DataModel.makeUserOffline($scope.user).then(function(data) {
       $scope.listMessages();
     });
